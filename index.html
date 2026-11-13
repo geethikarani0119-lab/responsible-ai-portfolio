@@ -1,235 +1,611 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsible AI: Understanding and Addressing Bias</title>
+<title>Responsible AI | My AI Portfolio</title>
+
 <style>
-  :root { --navy:#183153; --blue:#2764a5; --pale:#eef5fc; --ink:#243247; --muted:#5d6b7b; --green:#28765a; --border:#d8e2ee; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background:#f4f7fb; line-height:1.6; }
-  .wrap { max-width:1000px; margin:0 auto; padding:28px 18px 48px; }
-  header { background:linear-gradient(135deg,#183153,#2764a5); color:white; padding:34px 28px; border-radius:18px; }
-  header h1 { margin:0 0 10px; font-size:clamp(27px,4vw,38px); line-height:1.2; }
-  header p { margin:0; max-width:760px; color:#e8f1fb; }
-  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:12px; font-weight:bold; color:#d5e8ff; margin-bottom:9px; }
-  section { background:white; border:1px solid var(--border); border-radius:16px; padding:24px; margin-top:22px; box-shadow:0 5px 18px rgba(25,48,78,.05); }
-  h2 { color:var(--navy); margin:0 0 8px; font-size:24px; }
-  .intro { color:var(--muted); margin-top:0; }
-  .tabs { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
-  button { cursor:pointer; font:inherit; border:0; border-radius:10px; padding:11px 16px; font-weight:bold; transition:.15s ease; }
-  button:focus-visible { outline:3px solid #f2b84b; outline-offset:3px; }
-  .tab { background:var(--pale); color:var(--navy); border:1px solid var(--border); }
-  .tab.active, .primary { background:var(--blue); color:white; }
-  button:hover { transform:translateY(-1px); }
-  .panel { background:#f8fbff; border:1px solid var(--border); border-radius:13px; padding:20px; }
-  .panel h3 { color:var(--navy); margin:0 0 8px; font-size:21px; }
-  .tag { display:inline-block; background:#e2edf9; color:#244f7c; padding:4px 9px; border-radius:20px; font-size:12px; font-weight:bold; margin-bottom:10px; }
-  .detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:16px; }
-  .detail { background:white; border:1px solid var(--border); border-radius:11px; padding:15px; }
-  .detail h4 { margin:0 0 6px; color:var(--navy); }
-  .detail ul { margin:7px 0 0; padding-left:20px; }
-  .think { margin-top:16px; padding:16px; border-left:4px solid #e0a52d; background:#fff9e9; border-radius:8px; }
-  .reveal { display:none; margin-top:10px; color:#4b421f; }
-  .reveal.show { display:block; }
-  .quiz-question { padding:16px 0; border-bottom:1px solid var(--border); }
-  .quiz-question:last-child { border-bottom:0; }
-  .quiz-question p { margin:0 0 10px; font-weight:bold; }
-  .option { display:block; margin:8px 0; font-weight:normal; }
-  .option input { margin-right:8px; accent-color:var(--blue); }
-  .quiz-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
-  .secondary { background:#eaf0f7; color:var(--navy); }
-  #result { display:none; margin-top:18px; padding:16px; border-radius:10px; background:#edf7f1; border:1px solid #c8e4d3; }
-  #result.show { display:block; }
-  .small { color:var(--muted); font-size:13px; }
-  footer { text-align:center; color:var(--muted); font-size:13px; padding:24px 10px 0; }
-  @media (max-width:650px) { .detail-grid { grid-template-columns:1fr; } section { padding:18px; } header { padding:27px 21px; } }
+:root {
+    --navy: #14213d;
+    --blue: #2563eb;
+    --light: #f1f5f9;
+    --purple: #7555c9;
+    --green: #15966b;
+    --text: #263449;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+header {
+    background: linear-gradient(120deg, #14213d, #344c81, #7555c9);
+    color: white;
+    padding: 65px 8%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px 8%;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 12px #00000010;
+}
+
+nav a {
+    color: #263449;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 5px 10px;
+}
+
+nav a:hover {
+    color: var(--blue);
+}
+
+header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+header p {
+    max-width: 750px;
+    font-size: 18px;
+}
+
+.tag {
+    display: inline-block;
+    background: #ffffff25;
+    padding: 7px 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 45px 20px;
+}
+
+.section-title {
+    color: var(--navy);
+    font-size: 27px;
+    margin-bottom: 15px;
+}
+
+.intro {
+    margin-bottom: 30px;
+    color: #64748b;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #00000009;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px #00000015;
+}
+
+.card h3 {
+    color: var(--navy);
+    margin-bottom: 10px;
+}
+
+.icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+button {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #1746a0;
+}
+
+.example {
+    display: none;
+    background: white;
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 15px;
+    border-left: 5px solid var(--purple);
+}
+
+.example h3 {
+    color: var(--purple);
+    margin-bottom: 10px;
+}
+
+.example p {
+    margin-bottom: 10px;
+}
+
+.principle {
+    border-left: 4px solid var(--blue);
+    padding: 15px;
+    background: white;
+    margin-bottom: 12px;
+    border-radius: 7px;
+}
+
+.chart-row {
+    margin: 20px 0;
+}
+
+.bar {
+    background: #e2e8f0;
+    height: 17px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 20px;
+}
+
+.workflow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+}
+
+.step {
+    background: #e9edff;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 145px;
+    font-weight: bold;
+}
+
+.quiz {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #00000009;
+}
+
+.question {
+    padding: 18px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.question label {
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.question input {
+    margin-right: 8px;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+footer {
+    background: var(--navy);
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+@media(max-width:600px) {
+    header h1 {
+        font-size: 30px;
+    }
+
+    nav {
+        position: relative;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
-  <header>
-    <div class="eyebrow">Interactive learning artifact</div>
-    <h1>Responsible AI: Understanding and Addressing Bias</h1>
-    <p>Artificial intelligence can support decisions, but it can also repeat unfair patterns found in data. Explore three real-world situations and test your understanding of responsible AI.</p>
-  </header>
 
-  <section>
-    <h2>Why does AI bias matter?</h2>
-    <p class="intro">AI systems learn patterns from the data and instructions used to build them. When that information is incomplete, unbalanced, or reflects past unfairness, the system may produce results that disadvantage certain people. Human review and ongoing testing are important.</p>
-  </section>
-
-  <section>
-    <h2>Explore three examples</h2>
-    <p class="intro">Select each area to learn how bias can appear, who may be affected, and what can help reduce the risk.</p>
-    <div class="tabs" role="tablist" aria-label="Examples of AI bias">
-      <button class="tab active" role="tab" aria-selected="true" aria-controls="example-panel" id="tab-health" onclick="showExample('health')">Healthcare</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-hiring" onclick="showExample('hiring')">Recruitment</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-banking" onclick="showExample('banking')">Banking</button>
+<nav>
+    <strong>MY AI PORTFOLIO</strong>
+    <div>
+        <a href="#about">About</a>
+        <a href="#examples">Examples</a>
+        <a href="#principles">Principles</a>
+        <a href="#quiz">Quiz</a>
     </div>
-    <div class="panel" id="example-panel" role="tabpanel" aria-live="polite">
-      <span class="tag" id="example-tag">Example 1 · Healthcare</span>
-      <h3 id="example-title">AI in healthcare</h3>
-      <p id="example-situation">Imagine a healthcare system that uses an AI tool to help identify patients who may need extra medical attention. If the data used to train the tool mostly represents one patient group, the tool may be less accurate for people from groups that were not well represented.</p>
-      <div class="detail-grid">
-        <div class="detail">
-          <h4>Possible impact</h4>
-          <p id="example-impact">Some patients may not be identified as needing care when they do. This could contribute to unequal treatment or delayed support.</p>
-        </div>
-        <div class="detail">
-          <h4>Ways to reduce bias</h4>
-          <ul id="example-actions">
-            <li>Use training data that represents different patient populations.</li>
-            <li>Test accuracy across relevant groups, not only overall accuracy.</li>
-            <li>Keep qualified healthcare professionals involved in decisions.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="think">
-        <strong>Think about it:</strong>
-        <span id="think-question">Why is it important to test an AI healthcare tool with data from different patient groups?</span>
-        <button class="secondary" style="display:block;margin-top:10px" onclick="toggleAnswer()">Reveal suggested answer</button>
-        <p class="reveal" id="think-answer">Testing across different groups can reveal whether the tool works less accurately for some patients. Finding these gaps gives developers and healthcare teams a chance to improve the system before relying on it.</p>
-      </div>
-    </div>
-  </section>
+</nav>
 
-  <section>
-    <h2>Test your knowledge</h2>
-    <p class="intro">Answer all five questions, then select “Check my answers” to see your score and feedback.</p>
-    <form id="quiz">
-      <div class="quiz-question">
-        <p>1. What is one common cause of AI bias?</p>
-        <label class="option"><input type="radio" name="q1" value="a"> Training data that does not represent the people affected</label>
-        <label class="option"><input type="radio" name="q1" value="b"> Using clear and complete data</label>
-        <label class="option"><input type="radio" name="q1" value="c"> Testing a system regularly</label>
-      </div>
-      <div class="quiz-question">
-        <p>2. A hiring tool is trained on past hiring decisions that favored a narrow group of candidates. What is a possible risk?</p>
-        <label class="option"><input type="radio" name="q2" value="a"> It will automatically become fair</label>
-        <label class="option"><input type="radio" name="q2" value="b"> It may repeat unfair patterns from past decisions</label>
-        <label class="option"><input type="radio" name="q2" value="c"> It will stop using data</label>
-      </div>
-      <div class="quiz-question">
-        <p>3. Which action can help identify unfair differences in an AI system?</p>
-        <label class="option"><input type="radio" name="q3" value="a"> Check only the system's overall accuracy</label>
-        <label class="option"><input type="radio" name="q3" value="b"> Avoid reviewing the results</label>
-        <label class="option"><input type="radio" name="q3" value="c"> Compare performance across relevant groups</label>
-      </div>
-      <div class="quiz-question">
-        <p>4. True or false: Human review is still important when AI supports high-impact decisions.</p>
-        <label class="option"><input type="radio" name="q4" value="true"> True</label>
-        <label class="option"><input type="radio" name="q4" value="false"> False</label>
-      </div>
-      <div class="quiz-question">
-        <p>5. Which practices support responsible AI? (Select all that apply.)</p>
-        <label class="option"><input type="checkbox" name="q5" value="a"> Use relevant, representative data</label>
-        <label class="option"><input type="checkbox" name="q5" value="b"> Test and monitor the system over time</label>
-        <label class="option"><input type="checkbox" name="q5" value="c"> Ignore complaints if the system is fast</label>
-        <label class="option"><input type="checkbox" name="q5" value="d"> Include appropriate human oversight</label>
-      </div>
-      <div class="quiz-actions">
-        <button class="primary" type="button" onclick="gradeQuiz()">Check my answers</button>
-        <button class="secondary" type="reset" onclick="resetQuiz()">Try again</button>
-      </div>
-    </form>
-    <div id="result" aria-live="polite"></div>
-    <p class="small">Learning note: These are simplified examples for educational purposes. Real AI systems require context-specific evaluation, governance, and expert review.</p>
-  </section>
-  <footer>Responsible AI learning artifact · Explore, question, test, and improve.</footer>
-</div>
+<header>
+    <span class="tag">ARTIFACT 4 | RESPONSIBLE AI</span>
+    <h1>Building a Fair and Responsible AI Future</h1>
+    <p>
+        Artificial Intelligence is changing how people work, learn,
+        communicate, and make decisions. However, using AI responsibly
+        is just as important as developing new technologies.
+        Explore real-world examples, fairness, transparency, and
+        responsible AI practices.
+    </p>
+</header>
+
+<main>
+
+<section class="container" id="about">
+    <h2 class="section-title">01. Understanding Responsible AI</h2>
+    <p class="intro">
+        Responsible AI means developing and using artificial intelligence
+        in ways that are fair, transparent, safe, accountable, and respectful
+        of human rights. AI systems should support people rather than create
+        unnecessary risks or discrimination.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">⚖️</div>
+            <h3>Fairness</h3>
+            <p>AI should treat people fairly without discrimination based on personal characteristics.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔍</div>
+            <h3>Transparency</h3>
+            <p>People should understand when AI is being used and how important decisions are made.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔐</div>
+            <h3>Privacy</h3>
+            <p>Personal information should be protected and used appropriately.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">👥</div>
+            <h3>Accountability</h3>
+            <p>Organizations and developers must take responsibility for AI outcomes.</p>
+        </div>
+    </div>
+</section>
+
+<section class="container" id="examples">
+    <h2 class="section-title">02. Responsible AI in Real Life</h2>
+    <p class="intro">
+        Select an industry to explore how AI is used, the possible risks,
+        and ways to make its use more responsible.
+    </p>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="icon">🏥</div>
+            <h3>Healthcare</h3>
+            <p>AI helps doctors analyze medical images and identify possible health conditions.</p>
+            <button onclick="showExample('health')">Explore Example</button>
+        </div>
+
+        <div class="card">
+            <div class="icon">💼</div>
+            <h3>Recruitment</h3>
+            <p>AI tools help organizations screen resumes and identify potential candidates.</p>
+            <button onclick="showExample('recruit')">Explore Example</button>
+        </div>
+
+        <div class="card">
+            <div class="icon">🏦</div>
+            <h3>Banking</h3>
+            <p>AI helps banks detect suspicious transactions and assess financial risks.</p>
+            <button onclick="showExample('bank')">Explore Example</button>
+        </div>
+
+    </div>
+
+    <div class="example" id="health">
+        <h3>🏥 Healthcare: AI in Medical Decisions</h3>
+        <p><strong>How AI is used:</strong> AI can analyze medical images and help identify signs of diseases.</p>
+        <p><strong>Possible risk:</strong> If training data does not represent different patient populations, the system may produce less accurate results for certain groups.</p>
+        <p><strong>Responsible solution:</strong> Use diverse medical datasets, regularly test accuracy, protect patient privacy, and keep healthcare professionals involved in final decisions.</p>
+    </div>
+
+    <div class="example" id="recruit">
+        <h3>💼 Recruitment: AI in Hiring</h3>
+        <p><strong>How AI is used:</strong> Companies use AI to review resumes and help identify candidates who match job requirements.</p>
+        <p><strong>Possible risk:</strong> Historical hiring data may contain human biases. AI could repeat those patterns and disadvantage qualified applicants.</p>
+        <p><strong>Responsible solution:</strong> Audit hiring algorithms, use fair evaluation criteria, provide human review, and give applicants opportunities to challenge decisions.</p>
+    </div>
+
+    <div class="example" id="bank">
+        <h3>🏦 Banking: AI in Financial Services</h3>
+        <p><strong>How AI is used:</strong> Banks use AI to detect unusual transactions and help evaluate loan applications.</p>
+        <p><strong>Possible risk:</strong> Incorrect or biased data may result in unfair loan decisions or false fraud alerts.</p>
+        <p><strong>Responsible solution:</strong> Regularly test models, protect financial information, explain important decisions, and provide a process for customers to request a review.</p>
+    </div>
+
+</section>
+
+<section class="container">
+    <h2 class="section-title">03. Understanding AI Fairness</h2>
+    <p class="intro">
+        The following illustrative chart shows why checking AI systems
+        across different groups is important. These are hypothetical
+        values, not results from an actual AI system.
+    </p>
+
+    <div class="card">
+        <h3>Illustrative AI Prediction Accuracy</h3>
+
+        <div class="chart-row">
+            <p>Group A — 90%</p>
+            <div class="bar">
+                <div class="fill" style="width:90%; background:#2563eb"></div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <p>Group B — 72%</p>
+            <div class="bar">
+                <div class="fill" style="width:72%; background:#7555c9"></div>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <p>Group C — 85%</p>
+            <div class="bar">
+                <div class="fill" style="width:85%; background:#15966b"></div>
+            </div>
+        </div>
+
+        <p>
+            <strong>What can we learn?</strong> Different accuracy levels
+            may indicate that an AI system does not perform equally across
+            groups. Developers should investigate the reasons, evaluate
+            the data, and improve the model before relying on its results.
+        </p>
+    </div>
+</section>
+
+<section class="container" id="principles">
+    <h2 class="section-title">04. How to Build Responsible AI</h2>
+    <p class="intro">
+        Responsible AI requires attention throughout the development
+        process, not just after a system is released.
+    </p>
+
+    <div class="workflow">
+        <div class="step">📊<br>Collect Quality Data</div>
+        <span>→</span>
+        <div class="step">⚙️<br>Develop the Model</div>
+        <span>→</span>
+        <div class="step">🔎<br>Test for Bias</div>
+        <span>→</span>
+        <div class="step">👥<br>Human Review</div>
+        <span>→</span>
+        <div class="step">📈<br>Monitor Results</div>
+    </div>
+
+    <h3 style="margin:30px 0 15px;color:#14213d;">
+        My Key Takeaways
+    </h3>
+
+    <div class="principle">
+        <strong>1. Quality Data:</strong>
+        Good AI decisions depend on accurate, relevant, and representative data.
+    </div>
+
+    <div class="principle">
+        <strong>2. Human Involvement:</strong>
+        AI should assist human decisions, especially when outcomes affect people's lives.
+    </div>
+
+    <div class="principle">
+        <strong>3. Continuous Monitoring:</strong>
+        AI models should be reviewed regularly because data and real-world conditions change.
+    </div>
+
+    <div class="principle">
+        <strong>4. Ethical Responsibility:</strong>
+        Organizations must consider the impact of AI on individuals and society.
+    </div>
+</section>
+
+<section class="container" id="quiz">
+    <h2 class="section-title">05. Test Your Knowledge</h2>
+    <p class="intro">
+        Answer these five questions to check your understanding
+        of responsible AI.
+    </p>
+
+    <div class="quiz">
+
+        <form id="quizForm">
+
+            <div class="question">
+                <strong>1. What is the main purpose of responsible AI?</strong>
+                <label><input type="radio" name="q1" value="a"> Make AI work faster</label>
+                <label><input type="radio" name="q1" value="b"> Ensure AI is fair, safe, and accountable</label>
+                <label><input type="radio" name="q1" value="c"> Replace all human decisions</label>
+            </div>
+
+            <div class="question">
+                <strong>2. What can happen when AI is trained using biased data?</strong>
+                <label><input type="radio" name="q2" value="a"> It may produce unfair outcomes</label>
+                <label><input type="radio" name="q2" value="b"> It always becomes more accurate</label>
+                <label><input type="radio" name="q2" value="c"> It automatically removes discrimination</label>
+            </div>
+
+            <div class="question">
+                <strong>3. Why is human involvement important in healthcare AI?</strong>
+                <label><input type="radio" name="q3" value="a"> AI should make every medical decision</label>
+                <label><input type="radio" name="q3" value="b"> Humans are not needed after training</label>
+                <label><input type="radio" name="q3" value="c"> Professionals can review AI results and make informed decisions</label>
+            </div>
+
+            <div class="question">
+                <strong>4. Which practice helps protect privacy?</strong>
+                <label><input type="radio" name="q4" value="a"> Sharing personal data publicly</label>
+                <label><input type="radio" name="q4" value="b"> Protecting personal information and limiting access</label>
+                <label><input type="radio" name="q4" value="c"> Collecting all available personal information</label>
+            </div>
+
+            <div class="question">
+                <strong>5. What should organizations do after deploying an AI model?</strong>
+                <label><input type="radio" name="q5" value="a"> Stop checking its performance</label>
+                <label><input type="radio" name="q5" value="b"> Assume it will always work correctly</label>
+                <label><input type="radio" name="q5" value="c"> Monitor performance and check for bias regularly</label>
+            </div>
+
+            <button type="button" onclick="checkQuiz()">Submit Answers</button>
+            <button type="reset" onclick="resetQuiz()" style="background:#64748b;">Try Again</button>
+
+        </form>
+
+        <div id="result" aria-live="polite"></div>
+        <div id="feedback"></div>
+
+    </div>
+</section>
+
+<section class="container">
+    <h2 class="section-title">06. Personal Reflection</h2>
+    <div class="card">
+        <p>
+            Through this project, I learned that artificial intelligence
+            is not only about building models and improving performance.
+            It is also about understanding how technology affects people.
+            An AI system may provide accurate results, but we should also
+            consider whether those results are fair and reliable.
+        </p>
+        <br>
+        <p>
+            I believe human judgment, ethical thinking, and continuous
+            improvement are important when working with AI. As I continue
+            learning about artificial intelligence and machine learning,
+            I want to understand not only how these systems work but also
+            how to develop and use them responsibly.
+        </p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <h3>Responsible AI | My Learning Portfolio</h3>
+    <p>Learning to build AI systems that benefit people and society.</p>
+    <p>© 2026 | AI Portfolio Artifact</p>
+</footer>
 
 <script>
-const examples = {
-  health: {
-    tag: "Example 1 · Healthcare",
-    title: "AI in healthcare",
-    situation: "Imagine a healthcare system that uses an AI tool to help identify patients who may need extra medical attention. If the data used to train the tool mostly represents one patient group, the tool may be less accurate for people from groups that were not well represented.",
-    impact: "Some patients may not be identified as needing care when they do. This could contribute to unequal treatment or delayed support.",
-    actions: [
-      "Use training data that represents different patient populations.",
-      "Test accuracy across relevant groups, not only overall accuracy.",
-      "Keep qualified healthcare professionals involved in decisions."
-    ],
-    question: "Why is it important to test an AI healthcare tool with data from different patient groups?",
-    answer: "Testing across different groups can reveal whether the tool works less accurately for some patients. Finding these gaps gives developers and healthcare teams a chance to improve the system before relying on it."
-  },
-  hiring: {
-    tag: "Example 2 · Recruitment",
-    title: "AI in recruitment",
-    situation: "Imagine a company uses AI to screen job applications. The system is trained using several years of the company's previous hiring decisions. If past decisions favored candidates with certain backgrounds, schools, or career paths, the AI may learn to favor similar applicants.",
-    impact: "Qualified candidates with different experiences may be ranked lower or overlooked. The tool could repeat historical patterns instead of evaluating applicants fairly.",
-    actions: [
-      "Review training data and remove inappropriate signals that can act as unfair shortcuts.",
-      "Test whether screening results differ unfairly across relevant candidate groups.",
-      "Have recruiters review outcomes and provide a way to question or correct errors."
-    ],
-    question: "Why should a company review the historical hiring data before training an AI screening tool?",
-    answer: "Past hiring decisions may contain human preferences or unfair patterns. Reviewing the data helps prevent the AI from learning and repeating those patterns."
-  },
-  banking: {
-    tag: "Example 3 · Banking",
-    title: "AI in banking",
-    situation: "Imagine a bank uses AI to help assess loan applications. If the data reflects historical lending patterns that disadvantaged certain neighborhoods or groups, the model may learn patterns that continue to affect applicants unfairly.",
-    impact: "Some applicants may receive less favorable assessments even when their current financial information supports a different decision. This can limit access to important financial services.",
-    actions: [
-      "Check whether the data and selected variables are appropriate for the lending decision.",
-      "Evaluate model outcomes for unfair differences and investigate their causes.",
-      "Provide human review, clear explanations, and a process to challenge errors."
-    ],
-    question: "Why is it not enough for a loan model to be accurate overall?",
-    answer: "A model can perform well on average while making worse or unfair predictions for some groups. Banks should examine performance and outcomes across relevant groups as well as overall accuracy."
-  }
-};
-let currentExample = "health";
-function showExample(key) {
-  currentExample = key;
-  const e = examples[key];
-  document.getElementById("example-tag").textContent = e.tag;
-  document.getElementById("example-title").textContent = e.title;
-  document.getElementById("example-situation").textContent = e.situation;
-  document.getElementById("example-impact").textContent = e.impact;
-  const list = document.getElementById("example-actions");
-  list.innerHTML = "";
-  e.actions.forEach(item => { const li = document.createElement("li"); li.textContent = item; list.appendChild(li); });
-  document.getElementById("think-question").textContent = e.question;
-  document.getElementById("think-answer").textContent = e.answer;
-  document.getElementById("think-answer").classList.remove("show");
-  document.querySelectorAll(".tab").forEach(btn => {
-    const active = btn.id === "tab-" + key;
-    btn.classList.toggle("active", active);
-    btn.setAttribute("aria-selected", active ? "true" : "false");
-  });
+
+function showExample(id) {
+    const examples = document.querySelectorAll(".example");
+
+    examples.forEach(function(item) {
+        item.style.display = "none";
+    });
+
+    const selected = document.getElementById(id);
+    selected.style.display = "block";
+
+    selected.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 }
-function toggleAnswer() { document.getElementById("think-answer").classList.toggle("show"); }
-function gradeQuiz() {
-  const form = document.getElementById("quiz");
-  const answers = ["a", "b", "c", "true"];
-  let score = 0, unanswered = [];
-  for (let i=1; i<=4; i++) {
-    const chosen = form.querySelector('input[name="q'+i+'"]:checked');
-    if (!chosen) unanswered.push(i);
-    else if (chosen.value === answers[i-1]) score++;
-  }
-  const selected = [...form.querySelectorAll('input[name="q5"]:checked')].map(x => x.value).sort().join(",");
-  if (!selected) unanswered.push(5);
-  if (selected === "a,b,d") score++;
-  const result = document.getElementById("result");
-  result.classList.add("show");
-  if (unanswered.length) {
-    result.innerHTML = "<strong>Please answer all questions.</strong><br>Questions still unanswered: " + unanswered.join(", ") + ".";
-    return;
-  }
-  let message = score === 5 ? "Excellent work! You understand key ways to recognize and reduce AI bias." :
-                score >= 3 ? "Good effort! Review the examples and try again to strengthen your understanding." :
-                "Keep learning! Review the three examples, then try the quiz again.";
-  result.innerHTML = "<strong>Your score: " + score + " out of 5</strong><br>" + message;
+
+function checkQuiz() {
+
+    const answers = {
+        q1: "b",
+        q2: "a",
+        q3: "c",
+        q4: "b",
+        q5: "c"
+    };
+
+    let score = 0;
+    let unanswered = 0;
+
+    for (let question in answers) {
+        const selected = document.querySelector(
+            'input[name="' + question + '"]:checked'
+        );
+
+        if (!selected) {
+            unanswered++;
+        } else if (selected.value === answers[question]) {
+            score++;
+        }
+    }
+
+    const result = document.getElementById("result");
+    const feedback = document.getElementById("feedback");
+
+    if (unanswered > 0) {
+        result.innerText = "Please answer all five questions.";
+        feedback.innerText = "";
+        return;
+    }
+
+    result.innerText = "Your Score: " + score + " / 5";
+
+    if (score === 5) {
+        feedback.innerText =
+            "Excellent! You have a strong understanding of responsible AI.";
+    } else if (score >= 3) {
+        feedback.innerText =
+            "Good job! Review the principles and try again.";
+    } else {
+        feedback.innerText =
+            "Keep learning! Review the examples and take the quiz again.";
+    }
 }
+
 function resetQuiz() {
-  const result = document.getElementById("result");
-  result.classList.remove("show");
-  result.textContent = "";
+    document.getElementById("result").innerText = "";
+    document.getElementById("feedback").innerText = "";
 }
+
 </script>
+
 </body>
 </html>
